@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  microservice1:
+    image: ${DOCKER_REGISTRY-}microservice1
+    build:
+      context: .
+      dockerfile: MicroService1/Dockerfile
+    depends_on:
+      - rabbitmq
+      - microservice2
+    ports:
+      - '5001:80'
+  microservice2:
+    image: ${DOCKER_REGISTRY-}microservice2
+    build:
+      context: .
+      dockerfile: MicroService2/Dockerfile
+    depends_on:
+      - rabbitmq
+    ports:
+      - '5002:80'
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - 15672:15672
+      - 5672:5672
